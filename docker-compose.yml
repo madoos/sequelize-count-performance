@@ -1,0 +1,13 @@
+version: '2'
+services:
+
+  database_test:
+    image:  "postgres:latest"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=scp_db
+      - POSTGRES_USER=scp_user
+      - POSTGRES_PASSWORD=scp_pass
+    container_name: postgres_db
+    # docker exec -it postgres_db psql psql -d scp_db -U scp_user --password scp_pass

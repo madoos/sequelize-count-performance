@@ -1,0 +1,10 @@
+{
+  "database": "scp_db",
+  "username": "scp_user",
+  "password": "scp_pass",
+  "options": {
+    "host": "0.0.0.0",
+    "port": 5432,
+    "dialect": "postgres"
+  }
+}

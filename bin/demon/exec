@@ -1,0 +1,8 @@
+# !bin/bash
+
+SCRIPT_PATH=$1
+
+./node_modules/.bin/nodemon \
+--ext js --watch ./ \
+--delay 1 \
+--exec $SCRIPT_PATH
