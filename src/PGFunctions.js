@@ -5,10 +5,10 @@ const {
 } = require('./utils')
 
 module.exports = {
-  addDataBaseFunctions
+  addPerformanceCountFunctions
 }
 
-function addDataBaseFunctions () {
+function addPerformanceCountFunctions () {
   return promiseSerial(
     () => this.query(
     `CREATE OR REPLACE FUNCTION count_estimate(query text) RETURNS integer AS $$

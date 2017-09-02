@@ -1,9 +1,21 @@
 'use strict'
 
-const proxy = require('./src/proxy')
+const SequelizeCountPerformance = require('./src/SequelizeCountPerformance')
 
-module.exports = function performanceCount (sequelize) {
-  proxy.extendInstance(sequelize)
-  proxy.redefineMethods(sequelize)
-  return sequelize
+function sequelizeCountPerformance (sequelize) {
+  return SequelizeCountPerformance
+          .of(sequelize)
+          .extendInstance()
+          .redefineMethods()
+          .getInstance()
 }
+
+function wrap (Sequelize) {
+  return function SequelizeWrapped (...args) {
+    return sequelizeCountPerformance(new Sequelize(...args))
+  }
+}
+
+sequelizeCountPerformance.wrap = wrap
+
+module.exports = sequelizeCountPerformance

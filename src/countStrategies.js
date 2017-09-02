@@ -1,6 +1,8 @@
 'use strict'
 
-const { path } = require('ramda')
+const {
+  path
+} = require('ramda')
 
 module.exports = {
   countAllFromStatCollector () {
@@ -18,7 +20,7 @@ module.exports = {
   },
 
   countAllFromBlockSizeAndTuplesPerPage () {
-    return this.getOId()
+    return this._getOId()
       .then((oid) => {
         return this.sequelize
           .query(`SELECT (reltuples/relpages) * (pg_relation_size(${oid}) / (current_setting('block_size')::integer)) FROM pg_class where relname = '${this.tableName}';`)
@@ -27,19 +29,18 @@ module.exports = {
       })
   },
 
-  getOId () {
-    return this.sequelize
-      .query(`select oid from pg_class WHERE relname = '${this.tableName}';`)
-      .then(path([0, 0, 'oid']))
-      .then(Number)
-  },
-
-  estimateCount (where) {
-    // whereQuery example => `WHERE "redeemAt" IS NOT NULL`
+  countEstimate (where) {
     const whereQuery = this.QueryGenerator.whereQuery(where)
     const query = `SELECT count_estimate('SELECT 1 FROM "${this.tableName}" ${whereQuery}');`
     return this.sequelize
       .query(query)
       .then(path([0, 0, 'count_estimate']))
+  },
+
+  _getOId () {
+    return this.sequelize
+      .query(`select oid from pg_class WHERE relname = '${this.tableName}';`)
+      .then(path([0, 0, 'oid']))
+      .then(Number)
   }
 }

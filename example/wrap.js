@@ -1,7 +1,7 @@
 'use strict'
 
-const Sequelize = require('sequelize')
-const sequelizePerformanceCount = require('../')
+const { wrap } = require('../')
+const Sequelize = wrap(require('sequelize'))
 
 const {
   database,
@@ -18,13 +18,11 @@ const {
 
 example()
 
-async function example (params) {
-  const sequelize = new Sequelize(database, username, password, options)
+async function example () {
+  const db = new Sequelize(database, username, password, options)
 
   // fillDb
-  await sequelize.query(createLargeTable)
-
-  const db = sequelizePerformanceCount(sequelize)
+  await db.query(createLargeTable)
   await db.addPerformanceCountFunctions()
 
   const Items = db.define(table, schema)
