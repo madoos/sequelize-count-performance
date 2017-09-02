@@ -1,5 +1,9 @@
 'use strict'
 
-module.exports = function (sequelize) {
-  console.log()
+const proxy = require('./src/proxy')
+
+module.exports = function performanceCount (sequelize) {
+  proxy.extendInstance(sequelize)
+  proxy.redefineMethods(sequelize)
+  return sequelize
 }

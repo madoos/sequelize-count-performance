@@ -1,13 +1,21 @@
 'use strict'
 
-const chai = require('chai')
-const expect = chai.expect
+const Mocha = require('mocha')
+const { join } = require('path')
+const { forEach, map, pipe, bind } = require('ramda')
 
+const mocha = new Mocha({ timeout: 60000 })
+const absolutePath = (path) => join(__dirname, path)
 
+const addFiles = pipe(
+  map(absolutePath),
+  forEach(bind(mocha.addFile, mocha))
+)
 
+const paths = [
+    './module.js',
+]
 
-describe('src tests', function() {
-    it('*****', () => {
-        expect(true).to.be.true
-    })
-})
+addFiles(paths)
+mocha.run()
+  .on('end', process.exit)

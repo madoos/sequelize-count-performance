@@ -1,8 +1,26 @@
 'use strict'
 
-const { database, username, password, options } = require('./parameters.json')
+const {
+  database,
+  username,
+  password,
+  options
+} = require('./parameters.json')
+
 const Sequelize = require('sequelize')
+const sequelizePerformanceCount = require('../')
 
-const db = new Sequelize(database, username, password, options)
+const sequelize = new Sequelize(database, username, password, options)
+const db = sequelizePerformanceCount(sequelize)
 
-console.log(db)
+const User = db.define('user', {
+  username: Sequelize.STRING,
+  birthday: Sequelize.DATE
+})
+
+User.estimateCount({
+  username: 'Jhon',
+  test: false
+}).then((data) => {
+  console.log(data)
+})
