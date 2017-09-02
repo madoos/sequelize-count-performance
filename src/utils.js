@@ -1,8 +1,14 @@
 'use strict'
 
+const {
+  replace,
+  _
+} = require('ramda')
+
 module.exports = {
   mix,
-  promiseSerial
+  promiseSerial,
+  escapeSingleQuote: (target) => replace(/'/g, "''", target)
 }
 
 function mix (target, ...objs) {

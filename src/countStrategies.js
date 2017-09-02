@@ -1,6 +1,10 @@
 'use strict'
 
 const {
+  escapeSingleQuote
+} = require('./utils')
+
+const {
   path
 } = require('ramda')
 
@@ -31,7 +35,7 @@ module.exports = {
 
   countEstimate (where) {
     const whereQuery = this.QueryGenerator.whereQuery(where)
-    const query = `SELECT count_estimate('SELECT 1 FROM "${this.tableName}" ${whereQuery}');`
+    const query = `SELECT count_estimate('SELECT 1 FROM "${this.tableName}" ${escapeSingleQuote(whereQuery)}');`
     return this.sequelize
       .query(query)
       .then(path([0, 0, 'count_estimate']))

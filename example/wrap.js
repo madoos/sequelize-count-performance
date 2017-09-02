@@ -32,7 +32,11 @@ async function example () {
     VACUUMANALYZE: await Items.countAllFromVACUUMANALYZE(),
     BlockSizeAndTuplesPerPage: await Items.countAllFromBlockSizeAndTuplesPerPage(),
     getOId: await Items._getOId(),
-    countEstimate: await Items.countEstimate()
+    countEstimate: await Items.countEstimate({
+      s: {
+        $like: 'b238a7da37737e15773bc6ce7961d6a9'
+      }
+    })
   }
 
   return counter
