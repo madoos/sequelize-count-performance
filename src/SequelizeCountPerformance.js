@@ -3,6 +3,7 @@
 const { mix } = require('./utils')
 const pgFunctions = require('./PGFunctions')
 const countStrategies = require('./countStrategies')
+const modelMethods = require('./modelMethods')
 
 class SequelizeCountPerformance {
   constructor (sequelizeInstance) {
@@ -29,7 +30,7 @@ class SequelizeCountPerformance {
 
     sequelize.define = function (...args) {
       const Model = __originalDefine.apply(sequelize, args)
-      return mix(Model, countStrategies)
+      return mix(Model, countStrategies, modelMethods)
     }
 
     return this

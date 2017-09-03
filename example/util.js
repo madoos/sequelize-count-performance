@@ -12,6 +12,12 @@ module.exports = {
     generate_series(1,1000000);`,
   schema: {
     n: sequelize.INTEGER,
-    s: sequelize.STRING
+    s: {
+      type: sequelize.STRING,
+      primaryKey: true
+    }
+  },
+  schemaOptions: {
+    timestamps: false
   }
 }

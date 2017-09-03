@@ -13,6 +13,7 @@ const {
 const {
   table,
   schema,
+  schemaOptions,
   createLargeTable
 } = require('./util')
 
@@ -25,7 +26,7 @@ async function example () {
   await db.query(createLargeTable)
   await db.sync()
 
-  const Items = db.define(table, schema)
+  const Items = db.define(table, schema, schemaOptions)
 
   const counter = {
     statCollector: await Items.countAllFromStatCollector(),
@@ -38,6 +39,11 @@ async function example () {
       }
     })
   }
+
+  const estimates = await Items.findAndCountEstimateAll({
+    where: {s: {$like: 'b238a7da37737e15773bc6ce7961d6a9'}},
+    limit: 1
+  })
 
   await db.removePerformanceCountFunctions()
   return counter
