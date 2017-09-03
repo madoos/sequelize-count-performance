@@ -30,21 +30,19 @@ async function example () {
   await db.sync()
   await db.query(createLargeTable)
 
-  const adjustCountTrigger = await db.createTrigger({
-    name: 'adjust_count_trigger',
+  const triggerFunction = await db.createTriggerFunction({
     target: ItemsCounter,
-    emitter: Items,
-    eventType: 'after',
-    fireOnSpec: ['insert', 'update'],
-    actions: [{
-      type: 'insert',
-      execute: [{ }],
-      action: { }
-    }]
+    triggerFunctionName: 'trigger_function',
+    functionParams: [ {type: 'trigger_function_params'} ],
+    actions: []
   })
 
-  console.log(adjustCountTrigger)
-  // await Items.addTrigger(adjustCountTrigger)
+  const trigger = await Items.addTrigger(triggerFunction, {
+    triggerName: 'trigger_name',
+    eventType: 'after',
+    fireOnSpec: ['insert'],
+    options: ['FOR EACH ROW']
+  })
 
   const counter = {
     statCollector: await Items.countAllFromStatCollector(),
@@ -63,7 +61,8 @@ async function example () {
         }
       },
       limit: 1
-    })
+    }),
+    trigger
   }
 
   return counter
