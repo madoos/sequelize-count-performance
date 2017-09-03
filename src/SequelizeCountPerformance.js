@@ -19,11 +19,11 @@ class SequelizeCountPerformance {
   }
 
   redefineMethods () {
-    this._defineProxy()
+    this._define()._sync()
     return this
   }
 
-  _defineProxy () {
+  _define () {
     const __originalDefine = this.sequelize.define
     const sequelize = this.sequelize
 
@@ -32,6 +32,19 @@ class SequelizeCountPerformance {
       return mix(Model, countStrategies)
     }
 
+    return this
+  }
+
+  _sync () {
+    const __originalSync = this.sequelize.sync
+    const { __addPerformanceCountFunctions } = pgFunctions
+    const sequelize = this.sequelize
+
+    sequelize.sync = function (...args) {
+      return __addPerformanceCountFunctions
+             .apply(sequelize, args)
+             .then(() => __originalSync.apply(sequelize, args))
+    }
     return this
   }
 

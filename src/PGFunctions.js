@@ -4,14 +4,17 @@ const {
   promiseSerial
 } = require('./utils')
 
+const COUNT_ESTIMATE = 'count_estimate(query text)'
+
 module.exports = {
-  addPerformanceCountFunctions
+  __addPerformanceCountFunctions,
+  removePerformanceCountFunctions
 }
 
-function addPerformanceCountFunctions () {
+function __addPerformanceCountFunctions () {
   return promiseSerial(
     () => this.query(
-    `CREATE OR REPLACE FUNCTION count_estimate(query text) RETURNS integer AS $$
+    `CREATE OR REPLACE FUNCTION ${COUNT_ESTIMATE} RETURNS integer AS $$
       DECLARE
         rec   record;
         rows  integer;
@@ -24,4 +27,10 @@ function addPerformanceCountFunctions () {
       END;
       $$ LANGUAGE plpgsql VOLATILE STRICT;`)
   )
+}
+
+function removePerformanceCountFunctions () {
+  return promiseSerial(
+      () => this.query(`DROP FUNCTION IF EXISTS ${COUNT_ESTIMATE};`)
+    )
 }

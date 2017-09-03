@@ -23,7 +23,7 @@ async function example () {
 
   // fillDb
   await db.query(createLargeTable)
-  await db.addPerformanceCountFunctions()
+  await db.sync()
 
   const Items = db.define(table, schema)
 
@@ -39,5 +39,6 @@ async function example () {
     })
   }
 
+  await db.removePerformanceCountFunctions()
   return counter
 }

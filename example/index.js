@@ -25,7 +25,7 @@ async function example (params) {
   await sequelize.query(createLargeTable)
 
   const db = sequelizePerformanceCount(sequelize)
-  await db.addPerformanceCountFunctions()
+  await db.sync()
 
   const Items = db.define(table, schema)
 

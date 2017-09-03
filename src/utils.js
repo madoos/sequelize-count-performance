@@ -2,13 +2,13 @@
 
 const {
   replace,
-  _
+  partial
 } = require('ramda')
 
 module.exports = {
   mix,
   promiseSerial,
-  escapeSingleQuote: (target) => replace(/'/g, "''", target)
+  escapeSingleQuote: partial(replace, [/'/g, "''"])
 }
 
 function mix (target, ...objs) {
