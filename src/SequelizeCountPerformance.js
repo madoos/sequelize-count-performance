@@ -2,6 +2,7 @@
 
 const { mix } = require('./utils')
 const pgFunctions = require('./PGFunctions')
+const triggerFunctions = require('./triggers/functions')
 const countStrategies = require('./countStrategies')
 const modelMethods = require('./modelMethods')
 
@@ -15,7 +16,7 @@ class SequelizeCountPerformance {
   }
 
   extendInstance () {
-    this.sequelize = mix(this.sequelize, pgFunctions)
+    this.sequelize = mix(this.sequelize, pgFunctions, triggerFunctions)
     return this
   }
 
